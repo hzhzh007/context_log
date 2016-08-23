@@ -41,25 +41,25 @@ func (sc *ServerContext) Flush() {
 }
 func (sc *ServerContext) Debug(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Debug(s, args...)
+	Log.Debugf(s, args...)
 }
 func (sc *ServerContext) Info(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Info(s, args...)
+	Log.Infof(s, args...)
 }
 func (sc *ServerContext) Notice(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Notice(s, args...)
+	Log.Noticef(s, args...)
 }
 func (sc *ServerContext) Warning(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Warning(s, args...)
+	Log.Warningf(s, args...)
 }
 func (sc *ServerContext) Error(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Error(s, args...)
+	Log.Errorf(s, args...)
 }
 func (sc *ServerContext) Critical(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Critical(s, args...)
+	Log.Criticalf(s, args...)
 }
