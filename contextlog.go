@@ -7,15 +7,15 @@ import (
 	"time"
 )
 
-type ServerContext struct {
+type ContextLog struct {
 	buf   *bytes.Buffer
 	Uuid  string
 	sTime time.Time
 	tTime time.Time //临时统计用的时间
 }
 
-func NewContext(msg string) *ServerContext {
-	sc := new(ServerContext)
+func NewContextLog(msg string) *ContextLog {
+	sc := new(ContextLog)
 	sc.buf = bytes.NewBufferString(msg)
 	sc.Uuid = xid.New().String()
 	sc.sTime = time.Now()
@@ -23,43 +23,48 @@ func NewContext(msg string) *ServerContext {
 	return sc
 }
 
-func (sc *ServerContext) StartTimer() {
+//just for compatibility
+func NewContext(msg string) *ContextLog {
+	return NewContextLog(msg)
+}
+
+func (sc *ContextLog) StartTimer() {
 	sc.tTime = time.Now()
 }
 
-func (sc *ServerContext) StopTimer(key string) {
+func (sc *ContextLog) StopTimer(key string) {
 	duration := time.Now().Sub(sc.tTime)
 	sc.buf.WriteString(fmt.Sprintf(" %s=%v", key, duration))
 }
 
-func (sc *ServerContext) AddNotes(key string, val string) {
+func (sc *ContextLog) AddNotes(key string, val string) {
 	sc.buf.WriteString(fmt.Sprintf(" %s=%s", key, val))
 }
-func (sc *ServerContext) Flush() {
+func (sc *ContextLog) Flush() {
 	duration := time.Now().Sub(sc.sTime)
 	Log.Info(fmt.Sprintf("%s=%s cost=%v %s ", "Uuid", sc.Uuid, duration, sc.buf.String()))
 }
-func (sc *ServerContext) Debug(format string, args ...interface{}) {
+func (sc *ContextLog) Debug(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Debugf(s, args...)
 }
-func (sc *ServerContext) Info(format string, args ...interface{}) {
+func (sc *ContextLog) Info(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Infof(s, args...)
 }
-func (sc *ServerContext) Notice(format string, args ...interface{}) {
+func (sc *ContextLog) Notice(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Noticef(s, args...)
 }
-func (sc *ServerContext) Warning(format string, args ...interface{}) {
+func (sc *ContextLog) Warning(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Warningf(s, args...)
 }
-func (sc *ServerContext) Error(format string, args ...interface{}) {
+func (sc *ContextLog) Error(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Errorf(s, args...)
 }
-func (sc *ServerContext) Critical(format string, args ...interface{}) {
+func (sc *ContextLog) Critical(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
 	Log.Criticalf(s, args...)
 }
