@@ -58,25 +58,32 @@ func (sc *ContextLog) Flush() {
 }
 func (sc *ContextLog) Debug(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Debug(s, args...)
+	Log.Debug(varArgsInsert(s, args...))
 }
 func (sc *ContextLog) Info(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Info(s, args...)
+	Log.Info(varArgsInsert(s, args...))
 }
 func (sc *ContextLog) Notice(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Notice(s, args...)
+	Log.Notice(varArgsInsert(s, args...))
 }
 func (sc *ContextLog) Warning(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Warning(s, args...)
+	Log.Warning(varArgsInsert(s, args...))
 }
 func (sc *ContextLog) Error(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Error(s, args...)
+	Log.Error(varArgsInsert(s, args...))
 }
+
 func (sc *ContextLog) Critical(format string, args ...interface{}) {
 	s := fmt.Sprintf("%s=%s %s", "Uuid", sc.Uuid, format)
-	Log.Critical(s, args...)
+	Log.Critical(varArgsInsert(s, args...))
+}
+func varArgsInsert(s interface{}, args ...interface{}) []interface{} {
+	t := make([]interface{}, 0, len(args)+1)
+	t = append(t, s)
+	t = append(t, args)
+	return t
 }
